@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "task_agent": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "/home/mstouffer/repos/notification-hub",
+        "ta",
+        "mcp"
+      ],
+      "trust": true
+    }
+  }
+}
