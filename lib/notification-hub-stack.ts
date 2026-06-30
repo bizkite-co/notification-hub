@@ -13,9 +13,10 @@ export class NotificationHubStack extends cdk.Stack {
 
     // 1. Load Configuration
     const configPath = path.join(__dirname, '../config/config.json');
-    let config = { 
-      ntfyTopic: 'bizkite-tech-support-92821', 
+    let config: any = {
+      ntfyTopic: 'bizkite-tech-support-92821',
       clientAccountIds: [] as string[],
+      clientAccounts: [] as any[],
       pushoverUserKey: '',
       pushoverApiToken: ''
     };
@@ -29,7 +30,16 @@ export class NotificationHubStack extends cdk.Stack {
     }
 
     const ntfyTopic = (process.env.NTFY_TOPIC !== undefined ? process.env.NTFY_TOPIC : (config.ntfyTopic || '')).replace(/^"|"/g, '');
-    const clientAccountIds = config.clientAccountIds || [];
+    const clientAccountIds = (config.clientAccounts || []).map((c: any) => c.id);
+// Validate no duplicate IDs in clientAccounts
+if (config.clientAccounts) {
+  const ids = config.clientAccounts.map((c: any) => c.id);
+  const duplicateIds = ids.filter((id: string, idx: number) => ids.indexOf(id) !== idx);
+  if (duplicateIds.length) {
+    const uniqDupes = [...new Set(duplicateIds)];
+    throw new Error(`Duplicate clientAccount id(s) detected in config.json: ${uniqDupes.join(', ')}`);
+  }
+}
     const pushoverUserKey = (process.env.PUSHOVER_USER_KEY || config.pushoverUserKey || '').replace(/^"|"/g, '');
     const pushoverApiToken = (process.env.PUSHOVER_API_TOKEN || config.pushoverApiToken || '').replace(/^"|"/g, '');
 
@@ -44,7 +54,7 @@ export class NotificationHubStack extends cdk.Stack {
       snsTopic.addToResourcePolicy(new iam.PolicyStatement({
         sid: 'AllowClientAccountsToPublish',
         effect: iam.Effect.ALLOW,
-        principals: clientAccountIds.map(accountId => new iam.AccountPrincipal(accountId)),
+        principals: clientAccountIds.map((accountId: string) => new iam.AccountPrincipal(accountId)),
         actions: ['sns:Publish'],
         resources: [snsTopic.topicArn],
       }));

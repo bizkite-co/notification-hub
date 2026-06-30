@@ -26,6 +26,12 @@ deploy: build ## Deploy the CDK stack to AWS
 bootstrap: ## Bootstrap the CDK environment in AWS
 	@npx cdk bootstrap
 
+lint: ## Lint TypeScript (no‑emit check)
+	@npx tsc --noEmit
+
+test: ## Run unit tests (jest)
+	@npm test
+
 send: ## Send a test notification. Usage: make send MSG="My message" SUBJ="My subject"
 	@TOPIC_ARN=$$(aws sns list-topics --query "Topics[?ends_with(TopicArn, ':CentralTechSupportNotifications')].TopicArn" --output text); \
 	if [ -z "$$TOPIC_ARN" ]; then \

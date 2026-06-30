@@ -1,6 +1,22 @@
 {
-  "ntfyTopic": "",
-  "clientAccountIds": ["193481341784", "865664998993", "410883543979"],
+  "ntfyTopic": "bizkite-tech-support-92821",
   "pushoverUserKey": "uju3wgwo62yzeqvzo9avny2vuybz5g",
-  "pushoverApiToken": "YOUR_PUSHOVER_API_TOKEN_HERE"
+  "pushoverApiToken": "YOUR_PUSHOVER_API_TOKEN_HERE",
+  "clientAccounts": [
+    {
+      "id": "193481341784",
+      "slug": "turbo-prod",
+      "apiToken": "aedm7ixjy8qw7ytjbhcwog4c6717mv"
+    },
+    {
+      "id": "865664998993",
+      "slug": "roadmap",
+      "apiToken": "a2zq9acq3imwwuvosvk4j53zcagw4x"
+    },
+    {
+      "id": "410883543979",
+      "slug": "turbo-uat",
+      "apiToken": "aedm7ixjy8qw7ytjbhcwog4c6717mv"
+    }
+  ]
 }
